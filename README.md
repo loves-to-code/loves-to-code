@@ -1,3 +1,5 @@
+![lovestocode](https://raw.githubusercontent.com/loves-to-code/.github/refs/heads/main/assets/loves-to-code-banner.png)
+
 ## how to get your own subdomain~
 
 ### step 1 - fork this repo (also star 😜 optional)
