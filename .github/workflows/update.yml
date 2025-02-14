@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch full commit history for proper diff detection
 
       - name: Install dependencies
         run: npm install
@@ -19,19 +21,30 @@ jobs:
       - name: Get changed subdomain files
         id: diff
         run: |
-          # Check if previous commit exists; fallback to all files in subdomains/ if not
+          # If it's the first commit or no history, process all subdomain files
           if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
-            echo "First commit or no previous commit found. Processing all subdomain files."
+            echo "First commit detected. Processing all subdomain files."
             find subdomains -type f > changed-files.txt
           else
+            echo "Checking for changed files..."
             git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^subdomains/' > changed-files.txt || echo "No changes"
           fi
 
+      - name: Count changed files
+        id: filecount
+        run: |
+          count=$(cat changed-files.txt | wc -l)
+          echo "Changed files count: $count"
+          echo "::set-output name=count::$count"
+
       - name: Display changed files
-        run: cat changed-files.txt
+        if: steps.filecount.outputs.count != '0'
+        run: |
+          echo "Changed files:"
+          cat changed-files.txt
 
       - name: Validate and Update Subdomains
-        if: success() && steps.diff.outputs.changed-files != ''
+        if: steps.filecount.outputs.count != '0'
         run: |
           for file in $(cat changed-files.txt); do
             echo "Processing $file"
