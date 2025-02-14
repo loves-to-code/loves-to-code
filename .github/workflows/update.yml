@@ -19,7 +19,13 @@ jobs:
       - name: Get changed subdomain files
         id: diff
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^subdomains/' > changed-files.txt || echo "No changes"
+          # Check if previous commit exists; fallback to all files in subdomains/ if not
+          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "First commit or no previous commit found. Processing all subdomain files."
+            find subdomains -type f > changed-files.txt
+          else
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^subdomains/' > changed-files.txt || echo "No changes"
+          fi
 
       - name: Display changed files
         run: cat changed-files.txt
