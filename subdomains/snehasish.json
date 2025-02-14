@@ -10,6 +10,6 @@
     },
     "record": {
         "type": "CNAME",
-        "value": "cname.vercel-dns.com"
+        "value": "cname.example-dns.com"
     }
 }
