@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
 
-import v0 from "./routes/v0";
+import root from "./routes/root";
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(cors()); // Enable CORS
 
 // Routes - with version
-app.use("/v0", v0);
+app.use("/", root);
 
 // 404 Handler
 app.use((req, res) => {
