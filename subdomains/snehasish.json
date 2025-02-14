@@ -1,0 +1,15 @@
+{
+    "description": "wut you gonna use this for",
+    "subdomain": "snehasish",
+    "domain": "lovestoco.de",
+    "owner": {
+        "email": "mail@snehasish.xyz",
+        "github": "snehasishcodes",
+        "": "",
+        "discord": "snehasish"
+    },
+    "record": {
+        "type": "CNAME",
+        "value": "cname.vercel-dns.com"
+    }
+}
