@@ -1,4 +1,4 @@
-name: Process Subdomain Requests
+name: Validate and Update Subdomains
 
 on:
   push:
@@ -6,33 +6,31 @@ on:
       - "subdomains/**"
 
 jobs:
-  update-dns:
+  validate-and-update:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name: Get Changed Files
+      - name: Get changed subdomain files
         id: diff
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed-files.txt
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^subdomains/' > changed-files.txt || echo "No changes"
 
-      - name: Filter Subdomain Files
-        id: filter
+      - name: Display changed files
+        run: cat changed-files.txt
+
+      - name: Validate and Update Subdomains
+        if: success() && steps.diff.outputs.changed-files != ''
         run: |
-          grep '^subdomains/' changed-files.txt > subdomain-files.txt || echo "No subdomains changed"
-
-      - name: Display Changed Subdomain Files
-        run: cat subdomain-files.txt
-
-      - name: Run Subdomain Processor
-        if: success()
-        run: |
-          node scripts/update.js $(cat subdomain-files.txt)
+          for file in $(cat changed-files.txt); do
+            echo "Processing $file"
+            node scripts/validate.js $file && node scripts/update.js $file;
+          done
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           ZONE_ID: ${{ secrets.ZONE_ID }}
