@@ -1,0 +1,16 @@
+{
+	"name": "loves-to-code",
+	"version": "1.0.0",
+	"description": "Free subdomains for lovestoco.de",
+	"main": "scripts/update.js",
+	"scripts": {
+		"update": "node scripts/update.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"dependencies": {
+		"dotenv": "^16.4.7"
+	}
+}

@@ -1,0 +1,38 @@
+name: Process Subdomain Requests
+
+on:
+  push:
+    paths:
+      - "subdomains/**"
+
+jobs:
+  update-dns:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Get Changed Files
+        id: diff
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed-files.txt
+
+      - name: Filter Subdomain Files
+        id: filter
+        run: |
+          grep '^subdomains/' changed-files.txt > subdomain-files.txt || echo "No subdomains changed"
+
+      - name: Display Changed Subdomain Files
+        run: cat subdomain-files.txt
+
+      - name: Run Subdomain Processor
+        if: success()
+        run: |
+          node scripts/update.js $(cat subdomain-files.txt)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          ZONE_ID: ${{ secrets.ZONE_ID }}
