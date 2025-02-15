@@ -50,13 +50,18 @@ async function addDnsRecord(subdomain, record) {
 async function updateDnsRecords(filePath) {
     try {
         const data = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-        const { subdomain, record } = data;
+        const { subdomain, record, vercel } = data;
 
         if (!subdomain || !record || !record.type || !record.value) {
             throw new Error("Invalid subdomain data: Missing required fields.");
         }
 
         await addDnsRecord(subdomain, record);
+
+        // add vercel TXT record if hosted on vercel
+        if (vercel && typeof vercel === "string") {
+            await addDnsRecord(`_vercel.${subdomain}`, { type: "TXT", value: `${vercel}` });
+        }
     } catch (error) {
         console.error(`❌ Error processing file ${filePath}: ${error.message}`);
         process.exit(1);

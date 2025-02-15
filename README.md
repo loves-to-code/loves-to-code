@@ -29,7 +29,8 @@
     "record": { // very very very very very required
         "type": "CNAME", // A or CNAME required
         "value": "cname.example-dns.com" // value required 
-    }
+    },
+    "vercel": "your_vercel_TXT_string_here_replace_this" // optional : required for when you're using Vercel.
 }
 ```
 ### step 4 - pull request !!! 
