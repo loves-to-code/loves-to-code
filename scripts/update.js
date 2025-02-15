@@ -60,7 +60,7 @@ async function updateDnsRecords(filePath) {
 
         // add vercel TXT record if hosted on vercel
         if (vercel && typeof vercel === "string") {
-            await addDnsRecord(`_vercel.${subdomain}`, { type: "TXT", value: `${vercel}` });
+            await addDnsRecord(`_vercel`, { type: "TXT", value: `${vercel}` });
         }
     } catch (error) {
         console.error(`❌ Error processing file ${filePath}: ${error.message}`);
