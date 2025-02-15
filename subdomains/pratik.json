@@ -1,0 +1,15 @@
+{
+    "description": "my portfolio",
+    "subdomain": "pratik",
+    "domain": "lovestoco.de",
+    "owner": {
+        "email": "pratik.personal4@gmail.com",
+        "github": "pratik12350",
+        "discord": "notpratik"
+    },
+    "record": {
+        "type": "CNAME",
+        "value": "cname.vercel-dns.com"
+    },
+    "vercel": "vc-domain-verify=pratik.lovestoco.de,622563ccdba5f255138b"
+}
