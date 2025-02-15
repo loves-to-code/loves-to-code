@@ -1,0 +1,15 @@
+{
+    "description": "personal website",
+    "subdomain": "snehasish",
+    "domain": "lovestoco.de",
+    "owner": {
+        "email": "mail@snehasish.xyz",
+        "github": "snehasishcodes",
+        "anilist": "https://anilist.co/user/snehasishkun",
+        "discord": "snehasish"
+    },
+    "record": {
+        "type": "CNAME",
+        "value": "cname.vercel-dns.com"
+    }
+}
